@@ -194,7 +194,6 @@
         function updateClock() {
             const now = new Date();
             const localSeconds = (now.getTime() / 1000) + egyptOffset;
-            localSeconds -= 30 * 3600;
             const total_seconds = localSeconds % (42 * 3600);
             const seconds = total_seconds % 60;
             const minutes = Math.floor(total_seconds / 60) % 60;

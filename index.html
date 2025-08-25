@@ -193,8 +193,13 @@
         });
         function updateClock() {
             const now = new Date();
-            const localSeconds = (now.getTime() / 1000) + egyptOffset;
-            const total_seconds = localSeconds % (42 * 3600);
+            const localDate = new Date(now.getTime() + egyptOffset * 1000);
+            const localDayOfWeek = localDate.getUTCDay();
+            const localHours = localDate.getUTCHours();
+            const localMins = localDate.getUTCMinutes();
+            const localSecs = localDate.getUTCSeconds();
+            const seconds_since_Sunday = localDayOfWeek * 86400 + localHours * 3600 + localMins * 60 + localSecs;
+            const total_seconds = seconds_since_Sunday % (151200); // 42 * 3600
             const seconds = total_seconds % 60;
             const minutes = Math.floor(total_seconds / 60) % 60;
             const hours = Math.floor(total_seconds / 3600);
@@ -223,11 +228,6 @@
             const compMin = Math.floor((compSeconds % 3600) / 60);
             const compSec = compSeconds % 60;
             document.getElementById('utc-digital').textContent = `${compHours.toString().padStart(2, '0')}:${compMin.toString().padStart(2, '0')}:${compSec.toString().padStart(2, '0')}`;
-            const localDate = new Date(now.getTime() + egyptOffset * 1000);
-            const localDayOfWeek = localDate.getUTCDay();
-            const localHours = localDate.getUTCHours();
-            const localMins = localDate.getUTCMinutes();
-            const localSecs = localDate.getUTCSeconds();
             const hoursSinceSunday = localDayOfWeek * 24 + localHours + localMins / 60 + localSecs / 3600;
             const customDayIndex = Math.floor(hoursSinceSunday / 42) % 4;
             const dayBoxes = document.querySelectorAll('.day-box');
